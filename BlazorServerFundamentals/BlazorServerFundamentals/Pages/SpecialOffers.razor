@@ -1,0 +1,16 @@
+﻿@page "/special-offers"
+
+<h1>Special Offers</h1>
+<br/>
+<CascadingValue Name="DealName" Value='valueTest'>
+    @* 
+        Here you can put neested components and all will be capable
+        to access the value DealName
+    *@
+    <DealInfo></DealInfo>
+</CascadingValue>
+
+@code {
+    private string valueTest { get; set; } = "Throback Thursday";
+
+}

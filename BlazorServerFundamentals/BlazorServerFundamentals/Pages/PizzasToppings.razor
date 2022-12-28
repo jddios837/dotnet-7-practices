@@ -1,0 +1,17 @@
+﻿@using BlazorServerFundamentals.Data
+@using BlazorServerFundamentals.States
+@inject PizzaSalesState pizzaState
+
+@page "/pizzas-toppings"
+
+<h1>Out Last Pizzas and Topics</h1>
+
+<h1>Today We have been Sold a Total of @pizzaState.PizzasSoldToday Pizzas!</h1>
+
+<PizzaDetail PizzaName="Hawaiian" PizzaDescription="The one with pineapple"></PizzaDetail>
+
+<PizzaTopping Topping="@(new PizzaToppingModel() { Name = "Chilli Sauce", Ingredientes = "Three kinds of chilli."})"></PizzaTopping>
+
+@code {
+    
+}

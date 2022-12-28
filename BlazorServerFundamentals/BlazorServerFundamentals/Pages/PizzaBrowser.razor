@@ -1,0 +1,77 @@
+﻿@page "/"
+@using BlazorServerFundamentals.Data
+@using BlazorServerFundamentals.States
+
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject PizzaSalesState pizzaState
+@inject OrderState OrderState
+
+@* <h3>Welcome to Blazing Pizza</h3> *@
+
+@* <p>@welcomeMessage</p> *@
+<div class="main">
+    <h1>Blazing Pizza</h1>
+    <ul class="pizza-cards">
+        @if (_specials != null)
+        {
+            @foreach (var pizza in _specials)
+            {
+                <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(pizza))" style="background-image: url('@pizza.ImageUrl')">
+                    <div class="pizza-info">
+                        <span class="title">@pizza.Name</span>
+                        @pizza.Description
+                        <span class="price">
+                            @pizza.GetFormattedBasePrice()
+                        </span>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+@if (OrderState.ShowingConfigureDialog)
+{
+    <ConfigurePizzaDialog 
+        Pizza="OrderState.ConfiguringPizza" 
+        OnCancel="OrderState.CancelConfigurePizzaDialog"
+        OnConfirm="OrderState.ConfirmConfigurePizzaDialog"/>
+}
+
+@code {
+    // private Pizza configuringPizza;
+    // bool showingConfigureDialog;
+    
+    private List<PizzaSpecial>? _specials = new List<PizzaSpecial>();
+    // private string welcomeMessage = "However you like your pizzas, we can deliver them fast!";
+
+    protected override async Task OnInitializedAsync()
+    {
+        pizzaState.PizzasSoldToday = 20;
+        _specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
+    // specials.AddRange(new List<PizzaSpecial>
+    // {
+    //     new PizzaSpecial { Name = "The Baconatorizor", BasePrice =  11.99M, Description = "It has EVERY kind of bacon", ImageUrl="img/pizzas/bacon.jpg"},
+    //     new PizzaSpecial { Name = "Buffalo chicken", BasePrice =  12.75M, Description = "Spicy chicken, hot sauce, and blue cheese, guaranteed to warm you up", ImageUrl="img/pizzas/meaty.jpg"},
+    //     new PizzaSpecial { Name = "Veggie Delight", BasePrice =  11.5M, Description = "It's like salad, but on a pizza", ImageUrl="img/pizzas/salad.jpg"},
+    //     new PizzaSpecial { Name = "Margherita", BasePrice =  9.99M, Description = "Traditional Italian pizza with tomatoes and basil", ImageUrl="img/pizzas/margherita.jpg"},
+    //     new PizzaSpecial { Name = "Basic Cheese Pizza", BasePrice =  11.99M, Description = "It's cheesy and delicious. Why wouldn't you want one?", ImageUrl="img/pizzas/cheese.jpg"},
+    //     new PizzaSpecial { Name = "Classic pepperoni", BasePrice =  10.5M, Description = "It's the pizza you grew up with, but Blazing hot!", ImageUrl="img/pizzas/pepperoni.jpg" }
+    // });
+    }
+    
+    // void ShowConfigurePizzaDialog(PizzaSpecial special)
+    // {
+    //     configuringPizza = new Pizza()
+    //     {
+    //         Special = special,
+    //         SpecialId = special.Id,
+    //         BasePrice = special.BasePrice,
+    //         Size = Pizza.DefaultSize
+    //     };
+    //
+    //     showingConfigureDialog = true;
+    // }
+
+}

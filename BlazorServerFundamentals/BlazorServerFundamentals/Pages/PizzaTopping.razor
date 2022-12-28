@@ -1,0 +1,10 @@
+﻿@using BlazorServerFundamentals.Data
+
+<h2>New Topping: @Topping.Name</h2>
+
+<p>Ingredientes: @Topping.Ingredientes</p>
+
+@code {
+    [Parameter]
+    public PizzaToppingModel Topping { get; set; }
+}
